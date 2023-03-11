@@ -6,7 +6,7 @@ import aiopulsar
 import asyncio
 from pulsar.schema import *
 from utils import broker_host
-from modules.orders.application.logic import create_order
+from modules.orders.application.logic import create_order, cancel_order
 
 async def subscribe_to_topic(topic: str, subscription: str, schema: Record, consumer_type: _pulsar.ConsumerType = _pulsar.ConsumerType.Shared):
     try:
@@ -24,6 +24,8 @@ async def subscribe_to_topic(topic: str, subscription: str, schema: Record, cons
                     print(f"\nEvent data: {datos.data_payload}")
                     if datos.type == "CommandCreateOrder":
                         create_order(datos.data_payload)
+                    elif datos.type == "CancelOrder":
+                        cancel_order(datos.data_payload)
                     await consumer.acknowledge(mensaje)
 
     except:

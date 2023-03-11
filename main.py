@@ -59,8 +59,19 @@ def create_order_endpoint():
         type = "CommandCreateOrder"
     )
 
+    event2 = EventOrderCreated(
+        time = utils.time_millis(),
+        ingestion = utils.time_millis(),
+        datacontenttype = OrderCreatedPayload.__name__,
+        data_payload = event_payload,
+        type = "CancelOrder"
+    )
+
     dispatcher = Dispatcher()
     dispatcher.publish_message(event, "order-events")
+    import time
+    time.sleep(1)
+    dispatcher.publish_message(event2, "order-events")
     return {"message": "Order created successfully"}
 
 

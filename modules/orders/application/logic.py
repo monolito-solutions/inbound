@@ -8,6 +8,7 @@ from infrastructure.dispatchers import Dispatcher
 from config.db import get_db
 import utils
 import json
+import traceback
 
 def create_order(order:dict):
     db = get_db()
@@ -52,3 +53,15 @@ def create_order(order:dict):
     dispatcher = Dispatcher()
     dispatcher.publish_message(event, "order-events")
     dispatcher.publish_message(command, "order-commands")
+
+def cancel_order(order):
+    db = get_db()
+    order_obj = detect_order_version(order)
+    order_obj.order_status = "Canceled"
+    try:
+        repository = OrdersRepositorySQLAlchemy(db)
+        res = repository.update(order_obj)
+    except Exception as e:
+        traceback.print_exc(e)
+    finally:
+        db.close()

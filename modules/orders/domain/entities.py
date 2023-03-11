@@ -27,7 +27,7 @@ class OrderV1:
             order_version=2
         )
 
-@dataclass(frozen=True)
+@dataclass()
 class OrderV2:
     order_id: uuid.uuid4()
     customer_id: uuid.uuid4()
