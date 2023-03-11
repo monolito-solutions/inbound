@@ -12,6 +12,17 @@ class CheckInventoryPayload(Record):
     order_total = Float()
     order_version = Long()
 
+    def to_dict(self):
+        return {
+            "order_id": self.order_id,
+            "customer_id":self.customer_id,
+            "order_date": self.order_date,
+            "order_status": self.order_status,
+            "order_items": self.order_items,
+            "order_total": self.order_total,
+            "order_version": self.order_version
+        }
+
 
 class CommandCheckInventoryOrder(Record):
     id = String(default=str(uuid.uuid4()))
