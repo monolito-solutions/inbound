@@ -28,5 +28,3 @@ Para correr el microservicio Inbound, use el siguiente comando:
 ```
 python main.py
 ```
-
-Una vez que el microservicio esté corriendo, se podrá hacer una petición HTTP POST al endpoint `/orders` para enviar un pedido al microservicio. El pedido debe incluir un formato similar a los encontrados en la carpeta de ```./json_examples```.
