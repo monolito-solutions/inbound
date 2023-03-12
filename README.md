@@ -1,6 +1,6 @@
 # Inbound - Monolito Solutions
 
-Este es el repositorio del microservicio Inbound del proyecto "Entregas de los Alpes", el cual se encarga de recibir los pedidos del cliente. Este microservicio fue construido utilizando el framework FastAPI.
+Este es el repositorio del microservicio Inbound del proyecto "Entregas de los Alpes", el cual se encarga de recibir los pedidos del cliente.
 
 ## Requerimientos
 
