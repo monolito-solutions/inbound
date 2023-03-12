@@ -1,4 +1,4 @@
-class BaseAPIException(Exception):
+class InboundException(Exception):
     def __init__(self, message: str, code=400):
         self.error_code = code
         self.message = message

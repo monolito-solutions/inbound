@@ -1,6 +1,6 @@
-from upscaler.orders.versioning import detect_order_version
+from modules.orders.infrastructure.factory import factory_get_order
 from sqlalchemy.exc import IntegrityError
-from api.errors.exceptions import BaseAPIException
+from errors.exceptions import InboundException
 from modules.orders.application.events.events import EventOrderCreated, OrderCreatedPayload
 from modules.orders.application.commands.commands import CommandCheckInventoryOrder, CheckInventoryPayload
 from modules.orders.infrastructure.repositories import OrdersRepositorySQLAlchemy
@@ -13,7 +13,7 @@ import uuid
 def create_order(order):
     order.order_id = str(uuid.uuid4())
     db = get_db()
-    order = detect_order_version(order)
+    order = factory_get_order(order)
     try:
         repository = OrdersRepositorySQLAlchemy(db)
         repository.create(order)
@@ -39,7 +39,7 @@ def create_order(order):
         dispatcher.publish_message(event, "order-events")
         return
     except Exception as e:
-        raise BaseAPIException(f"Error creating order: {e}", 500)
+        raise InboundException(f"Error creating order: {e}", 500)
     finally:
         db.close()
 
@@ -76,7 +76,7 @@ def create_order(order):
 
 def cancel_order(order):
     db = get_db()
-    order_obj = detect_order_version(order)
+    order_obj = factory_get_order(order)
     order_obj.order_status = "Canceled"
     try:
         repository = OrdersRepositorySQLAlchemy(db)
